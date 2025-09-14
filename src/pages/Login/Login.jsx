@@ -1,6 +1,7 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-simple-captcha';
 import { AuthContext } from '../../provider/AuthProvider';
+import { Link } from 'react-router-dom';
 
 const Login = () => {
     const { signInUser } = useContext(AuthContext);
@@ -171,10 +172,10 @@ const Login = () => {
             </div>
 
             <p className="mt-8 text-xs font-light text-center text-gray-400">
-                Don't have an account?{" "}
-                <a href="#" className="font-medium text-gray-700 dark:text-gray-200 hover:underline">
+                Do not have an account?{" "}
+                <Link to='/register' className="font-medium text-gray-700 dark:text-gray-200 hover:underline">
                     Create One
-                </a>
+                </Link>
             </p>
         </div>
     );
