@@ -1,17 +1,21 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-simple-captcha';
 import { AuthContext } from '../../provider/AuthProvider';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 const Login = () => {
+    const navigate = useNavigate();
+    const location = useLocation();
     const { signInUser } = useContext(AuthContext);
     const [disable, setDisable] = useState(true);
     const captchaRef = useRef(null);
 
+    const from = location.state?.from?.pathname || '/';
+
     useEffect(() => {
         setTimeout(() => {
             loadCaptchaEnginge(6);
-        }, 100); // 100ms দেরিতে কল করলাম
+        }, 100);
     }, []);
 
     const handleSubmit = event => {
@@ -22,9 +26,8 @@ const Login = () => {
         console.log(email, password);
 
         signInUser(email, password)
-            .then(result => {
-                const user = result.user;
-                console.log(user);
+            .then(() => {
+                navigate(from, { replace: true });
             })
     }
 

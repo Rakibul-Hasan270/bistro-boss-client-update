@@ -1,11 +1,24 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form"
+import { useContext } from "react";
+import { AuthContext } from "../../provider/AuthProvider";
 
 const Register = () => {
-    const { register, handleSubmit, formState: { errors }, } = useForm();
+    const { createUser, updateUserProfile } = useContext(AuthContext);
+    const { register, handleSubmit, reset, formState: { errors }, } = useForm();
+    const navigate = useNavigate();
 
     const onSubmit = data => {
-        console.log(data)
+        createUser(data.email, data.password)
+            .then(result => {
+                console.log(result);
+                updateUserProfile(data.name, data.photoUrl)
+                    .then(() => {
+                        console.log('user profile info update');
+                        reset();
+                        navigate('/');
+                    })
+            })
     }
 
     return (
@@ -38,6 +51,19 @@ const Register = () => {
                     <div>{errors.name && <p className="text-red-600">Name is required</p>}</div>
 
 
+
+                    <div className="relative flex items-center mt-8">
+                        <span className="absolute">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 mx-3 text-gray-300 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                        </span>
+
+                        <input {...register("photoUrl", { required: true })} type="text" className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40" placeholder="Photo Url" />
+                    </div>
+                    <div>{errors.photoUrl && <p className="text-red-600">Photo Url is required</p>}</div>
+
+
                     <div className="relative flex items-center mt-6">
                         <span className="absolute">
                             <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 mx-3 text-gray-300 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
@@ -56,11 +82,12 @@ const Register = () => {
                             </svg>
                         </span>
 
-                        <input {...register("password", { required: true, minLength: 6, maxLength: 20 })} type="password" className="block w-full px-10 py-3 text-gray-700 bg-white border rounded-lg dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40" placeholder="Password" />
+                        <input {...register("password", { required: true, minLength: 6, maxLength: 20, pattern: /^(?=.*[A-Z])(?=.*[@$!#%*?&])(?=.*[0-9])(?=.*[a-z])/ })} type="password" className="block w-full px-10 py-3 text-gray-700 bg-white border rounded-lg dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40" placeholder="Password" />
                     </div>
                     <div>{errors.password?.type === 'required' && <p className="text-red-600">Password is required</p>}</div>
-                    <div>{errors.password?.type === 'minLength' && <p className="text-red-600">Password must be 6 disit start</p>}</div>
-                    <div>{errors.password?.type === 'maxLength' && <p className="text-red-600">Password must be 20 disit down</p>}</div>
+                    <div>{errors.password?.type === 'minLength' && <p className="text-red-600">Password must be 6 characters</p>}</div>
+                    <div>{errors.password?.type === 'maxLength' && <p className="text-red-600">Password must be less then 20 characters</p>}</div>
+                    <div>{errors.password?.type === 'pattern' && <p className="text-red-600">Password must have one upperCase one lowercase, one number and one special characters</p>}</div>
 
                     <div className="mt-6">
                         <button className="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-500 rounded-lg hover:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50">

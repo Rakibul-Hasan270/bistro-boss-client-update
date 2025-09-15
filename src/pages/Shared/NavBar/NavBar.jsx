@@ -1,13 +1,37 @@
-import { NavLink } from "react-router-dom";
+import { useContext } from "react";
+import { Link, NavLink } from "react-router-dom";
+import { AuthContext } from "../../../provider/AuthProvider";
+import { FaOpencart } from "react-icons/fa";
 
 const NavBar = () => {
+    const { user, logOut } = useContext(AuthContext);
+
+    const handelLogOut = () => {
+        logOut()
+            .then(() => { })
+    }
 
     const navOptions = <>
         <li><NavLink to='/'>Home</NavLink></li>
         <li><NavLink to='/menu'>Our Menu</NavLink></li>
         <li><NavLink to='/order/soup'>Order Food</NavLink></li>
-        <li><NavLink to='/login'>Login</NavLink></li>
-        <li><NavLink to='/register'>Register</NavLink></li>
+        <li><NavLink to='/secret'>Secret</NavLink></li>
+        <li>
+            <Link to='/'>
+                <button className="btn">
+                    <FaOpencart></FaOpencart> <div className=" badge-sm badge-secondary ml-3">+0</div>
+                </button>
+            </Link>
+        </li>
+        {user ?
+            <div className="flex items-center justify-center gap-6">
+                <span>{user?.displayName}</span>
+                <button onClick={handelLogOut} className="but btn-outline btn-success">Log Out</button>
+            </div> :
+            <div className="flex justify-center items-center">< li > <NavLink to='/login'>Login</NavLink></li>
+                <li><NavLink to='/register'>Register</NavLink></li>
+            </div>
+        }
     </>
 
     return (
@@ -30,7 +54,7 @@ const NavBar = () => {
                     </ul>
                 </div>
                 <div className="navbar-end">
-                    <a className="btn">Get started</a>
+                    <img src={user?.photoUrl} alt="" />
                 </div>
             </div>
         </>
