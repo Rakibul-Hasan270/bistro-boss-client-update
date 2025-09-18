@@ -10,7 +10,9 @@ const NavBar = () => {
 
     const handelLogOut = () => {
         logOut()
-            .then(() => { })
+            .then(() => {
+                localStorage.removeItem('token');
+            })
     }
 
     const navOptions = <>
@@ -19,7 +21,7 @@ const NavBar = () => {
         <li><NavLink to='/order/soup'>Order Food</NavLink></li>
         <li><NavLink to='/secret'>Secret</NavLink></li>
         <li>
-            <Link to='/dashboard/cart'>
+            <Link to='/dashboard'>
                 <button className="btn">
                     <FaOpencart></FaOpencart> <div className="badge badge-sm badge-secondary ml-3">+{cart.length}</div>
                 </button>

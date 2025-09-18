@@ -12,6 +12,7 @@ import PrivateRouts from "./PrivateRouts";
 import Dashboard from "../Layout/Dashboard";
 import Cart from "../pages/Dashboard/Cart/Cart";
 import UserHome from "../pages/Dashboard/UserHome/UserHome";
+import AllUsers from "../pages/Dashboard/AllUsers/AllUsers";
 
 
 export const router = createBrowserRouter([
@@ -47,8 +48,10 @@ export const router = createBrowserRouter([
   },
   {
     path: "dashboard",
-    element: <Dashboard></Dashboard>,
+    element: <PrivateRouts><Dashboard></Dashboard></PrivateRouts>,
     children: [
+
+      // users panel 
       {
         path: 'cart',
         element: <Cart></Cart>
@@ -56,6 +59,14 @@ export const router = createBrowserRouter([
       {
         path: 'userHome',
         element: <UserHome></UserHome>
+      },
+
+
+
+      // admin panel 
+      {
+        path: 'allUser',
+        element: <AllUsers></AllUsers>
       }
     ]
   }

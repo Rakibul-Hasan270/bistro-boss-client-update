@@ -21,14 +21,14 @@ const Cart = () => {
             if (result.isConfirmed) {
                 axiosSecure.delete(`/cart/${id}`)
                     .then(res => {
-                        if (res.data.deletedCount) {
+                        if (res.data.deletedCount > 0) {
+                            refetch();
                             Swal.fire({
                                 title: `${name} Deleted!`,
                                 text: "Your file has been deleted.",
                                 icon: "success"
                             });
                         }
-                        refetch();
                     })
 
             }
