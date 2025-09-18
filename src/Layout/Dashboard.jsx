@@ -1,10 +1,11 @@
 import { FaBook, FaCalendar, FaHome, FaList, FaSearch, FaShoppingCart, FaUser, FaUtensils } from "react-icons/fa";
 import { NavLink, Outlet } from "react-router-dom";
 import useCart from "../hooks/useCart";
+import useAdmin from "../hooks/useAdmin";
 
 const Dashboard = () => {
     const [cart] = useCart();
-    const isAdmin = true;
+    const [isAdmin] = useAdmin();
 
     return (
         <div className="flex">
@@ -17,7 +18,7 @@ const Dashboard = () => {
                                     <button className="btn btn-primary w-full"><FaHome className="mr-2"></FaHome>Admin Home</button>
                                 </NavLink>
                             </li>
-                            <li>    
+                            <li>
                                 <NavLink to='/dashboard/addItem' className='flex items-center gap-2'>
                                     <button className="btn btn-primary w-full"><FaUtensils className="mr-2"></FaUtensils>Add Items</button>
                                 </NavLink>
